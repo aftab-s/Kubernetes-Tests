@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: docker-coffee-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: docker-coffee
+  template:
+    metadata:
+      labels:
+        app: docker-coffee
+    spec:
+      containers:
+        - name: docker-coffee-container
+          image: aftab2010/docker-coffee
+          ports:
+            - containerPort: 8085
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: docker-coffee-service
+spec:
+  selector:
+    app: docker-coffee
+  type: LoadBalancer  
+  ports:
+    - protocol: TCP
+      port: 8085
+      targetPort: 80
+      nodePort: 30002
